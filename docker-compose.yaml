@@ -1,0 +1,10 @@
+version: '3.3'
+
+services:
+  flask_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: anamarina95/scores-app
+    ports:
+      - 30000:30000

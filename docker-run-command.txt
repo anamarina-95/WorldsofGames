@@ -1,0 +1,2 @@
+docker run -d --name demo-run --expose 8777 anamarina95/scores-app:latest
+
