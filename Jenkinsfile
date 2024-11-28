@@ -15,7 +15,7 @@ pipeline {
         }
         stage('Run the dockerized application') {
             steps {
-                sh 'docker-compose run -d -p 8777:30000 -v "$(pwd)"/Scores.txt:/Scores.txt:ro \'
+                sh 'docker-compose run -d -p 8777:30000 -v "$(pwd)"/Scores.txt:/Scores.txt:ro'
             }
         }
         stage('Test with Selenium the scores web service. Pipeline fails if tests fails') {
