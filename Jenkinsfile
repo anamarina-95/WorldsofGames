@@ -32,7 +32,8 @@ pipeline {
                       throw err
                     }
                 }
-           }
+            }
+        }
         stage('Finalize terminate the test container and push to DockerHub the new image created') {
             steps {
                 sh 'docker-compose stop'
