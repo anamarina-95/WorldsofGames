@@ -19,20 +19,20 @@ pipeline {
             }
         }
         stage('Test with Selenium the scores web service. Pipeline fails if tests fails') {
-           try {
-               steps {
-                   sh 'mvn clean install'
-                   sh 'mvn test'
-                   sh 'pytest --junit-xml=report.xml --headless'
-               }
+            steps {
+                script {
+                    try {
+                        sh 'mvn clean install'
+                        sh 'mvn test'
+                        sh 'pytest --junit-xml=report.xml --headless'
+                    } catch (err) {
+                        step([$class: 'JUnitResultArchiver' , testResults: '**/target/surefire-reports/TEST-*.xml'])
+                        if (currentBuild.result == 'UNSTABLE')
+                          currentBuild.result = 'FAILURE'
+                      throw err
+                    }
+                }
            }
-           catch(err) {
-               step([$class: 'JUnitResultArchiver' , testResults: '**/target/surefire-reports/TEST-*.xml'])
-               if (currentBuild.result == 'UNSTABLE')
-                 currentBuild.result = 'FAILURE'
-               throw err
-           }
-        }
         stage('Finalize terminate the test container and push to DockerHub the new image created') {
             steps {
                 sh 'docker-compose stop'
